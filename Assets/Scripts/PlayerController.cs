@@ -33,7 +33,6 @@ public class PlayerController : MonoBehaviour
 
     private void Jump() {
         if(IsGrounded()) {
-            Physics.gravity.y * 2;
             rb.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
         }
     }
