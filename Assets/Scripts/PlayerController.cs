@@ -10,12 +10,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask ground;
     private Rigidbody2D rb;
     private Collider2D coll;
+    private Animator animator;
+    private SpriteRenderer sr;
     
 
     private void Awake() {
         pac = new PlayerActionControls();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     private void OnEnable() {
@@ -34,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private void Jump() {
         if(IsGrounded()) {
             rb.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
+            animator.SetTrigger("Jump");
         }
     }
 
@@ -52,9 +57,23 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       float movementValue = pac.Land.Move.ReadValue<float>();
-       Vector3 currentPosition = transform.position;
-       currentPosition.x += movementValue * speed * Time.deltaTime;
-       transform.position = currentPosition;
+       move();
+    }
+
+    private void move() {
+        float movementValue = pac.Land.Move.ReadValue<float>();
+        Vector3 currentPosition = transform.position;
+        currentPosition.x += movementValue * speed * Time.deltaTime;
+        transform.position = currentPosition;
+
+        //animation
+        if(movementValue != 0) animator.SetBool("isRunning", true);
+        else animator.SetBool("isRunning", false);
+
+        //flip sprite
+        if(movementValue == -1)
+            sr.flipX = true;
+        else if(movementValue == 1) 
+            sr.flipX = false;
     }
 }
