@@ -70,10 +70,14 @@ public class PlayerController : MonoBehaviour
         if(movementValue != 0) animator.SetBool("isRunning", true);
         else animator.SetBool("isRunning", false);
 
-        //flip sprite
+        //flip sprite 
         if(movementValue == -1)
             sr.flipX = true;
         else if(movementValue == 1) 
             sr.flipX = false;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        
     }
 }
